@@ -4,14 +4,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.microservicios.turnos.model.Paciente;
 import com.microservicios.turnos.model.Turno;
 import com.microservicios.turnos.repository.ITurnoRepository;
 
+@Service
 public class TurnoService implements ITurnoService {
 
     @Autowired
     private ITurnoRepository turnoRepo;
+
+    @Autowired
+    private RestTemplate apiConsumir;
 
     @Override
     public List<Turno> getTurnos() {
@@ -22,13 +29,13 @@ public class TurnoService implements ITurnoService {
     public void saveTurno(LocalDate fecha, String tratamiento, String dniPaciente) {
         
         //buscar paciente en la api pacientes
-        // Paciente pac = //buscar en la api
-        // String nombreCompletoPaciente = // lo que consumo de nombre de la api
+        Paciente pac = apiConsumir.getForObject("http://localhost:9001/pacientes/traerdni/" + dniPaciente, Paciente.class);
+        String nombreCompletoPaciente = pac.getNombre() + " " + pac.getApellido();
 
         Turno turno = new Turno();
         turno.setFecha(fecha);
         turno.setTratamiento(tratamiento);
-        // turno.setNombreCompletoPaciente(dniPaciente);
+        turno.setNombreCompletoPaciente(nombreCompletoPaciente);
 
         turnoRepo.save(turno);
     }

@@ -2,10 +2,10 @@ package com.microservicios.turnos.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.microservicios.turnos.dto.TurnoDTO;
 import com.microservicios.turnos.model.Turno;
 import com.microservicios.turnos.service.ITurnoService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -29,11 +27,8 @@ public class TurnoController {
 
     // 1 - Crear nuevo turno
     @PostMapping("/crear")
-    public String crearTurno(@RequestBody LocalDate fecha,
-                            @RequestBody String tratamiento,
-                            @RequestBody String dniPaciente
-                            ) {
-        turnoServ.saveTurno(fecha, tratamiento, dniPaciente);
+    public String crearTurno(@RequestBody TurnoDTO turno) {
+        turnoServ.saveTurno(turno.getFecha(), turno.getTratamiento(), turno.getDniPaciente());
 
         return "Turno creado correctamente";
     }                       

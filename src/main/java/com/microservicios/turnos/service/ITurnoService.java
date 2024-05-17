@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.microservicios.turnos.model.Turno;
 
+
 public interface ITurnoService {
     public List<Turno> getTurnos();
     
